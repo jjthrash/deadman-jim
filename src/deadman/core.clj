@@ -3,13 +3,20 @@
   (:require [clojure.data.json :as json]
             [compojure.route :as route]
             [ring.middleware.json :as middleware]
-            [compojure.handler :as handler]))
+            [compojure.handler :as handler])
+  (:import [com.twilio.sdk TwilioRestClient]))
 
 (def timers (atom {}))
 
+(def twilio-sid (System/getenv "TWILIO_ACCOUNT_SID"))
+(def twilio-auth-token (System/getenv "TWILIO_AUTH_TOKEN"))
+(def twilio-from-number (System/getenv "TWILIO_FROM_NUMBER"))
+
 (defn send-sms [number message]
-  (prn [number message])
-  nil)
+  (let [client (new TwilioRestClient twilio-sid twilio-auth-token)
+        message-factory (.getSmsFactory (.getAccount client))
+        message-params {"Body" message "To" number "From" twilio-from-number}]
+    (.create message-factory message-params)))
 
 (defn build-timer-thread [{timeout "timeout", number "number", message "message", :as timer-data}]
   (Thread.

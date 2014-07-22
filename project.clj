@@ -10,4 +10,5 @@
                  [ring-json-params "0.1.0"]
                  [org.clojure/data.json "0.2.5"]]
   :plugins [[lein-ring "0.8.11"]]
+  :resource-paths ["lib/*"]
   :ring {:handler deadman.core/app})
