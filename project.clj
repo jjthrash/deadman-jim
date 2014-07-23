@@ -12,4 +12,4 @@
                  [org.clojure/data.json "0.2.5"]]
   :plugins [[lein-ring "0.8.11"]]
   :resource-paths ["lib/*"]
-  :ring {:handler deadman.core/app})
+  :min-lein-version "2.0.0")
