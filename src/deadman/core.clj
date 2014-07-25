@@ -22,8 +22,8 @@
     (let [client (new TwilioRestClient twilio-sid twilio-auth-token)
           message-factory (.getSmsFactory (.getAccount client))
           message-params {"Body" message "To" number "From" twilio-from-number}]
-      (.create message-factory message-params)))
-    (prn "Twilio not configured"))
+      (.create message-factory message-params))
+    (prn "Twilio not configured")))
 
 (defn build-timer-thread [{timeout "timeout", number "number", message "message", :as timer-data}]
   (Thread.
