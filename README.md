@@ -27,6 +27,34 @@ curl -XPUT \
      https://myserver.herokuapp.com/timers/my-unique-reminder-id
 ```
 
+### Example use
+
+I use this project to remind me to take my FreedomPOP mifi home with me. Flow is as follows:
+
+1. Cron job runs a script every minute: if on the FreedomPOP wifi hotspot, it will PUT a 2-minute timer. (The current_ssid is in this repo)
+2. After 2 minutes of silence, I get an SMS reminding me to take my mifi home.
+
+#### Cron config
+
+```crontab
+* * * * * /Users/jjthrash/bin/freedompop-deadman-switch
+```
+
+#### freedompop-deadman-switch
+
+```bash
+#!/bin/bash
+
+ssid=`/Users/jjthrash/bin/current_ssid`
+
+if [ "$ssid" = "FreedomPop" ]; then
+    curl -XPUT \
+         -d '{"timeout" : 120000, "number" : "+19195555555", "message" : "Don'"'"'t forget your FreedomPop!"}' \
+         -H "Content-Type: application/json" \
+         https://appname.herokuapp.com/timers/a262af3171c2bb838eadea92532d8476
+fi
+```
+
 ## TODO
 
 - Persist timers (currently they will disappear if the app restarts)
