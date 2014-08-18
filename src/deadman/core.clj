@@ -60,7 +60,7 @@
 
 (defn get-timer [{rp :route-params}]
   (let [timer (get @timers (:id rp))]
-    (when timer {:body (:data timer)}
+    (if timer {:body (:data timer)}
               (route/not-found {:message "Not found"}))))
 
 (defroutes main-routes
