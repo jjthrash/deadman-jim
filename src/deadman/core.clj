@@ -63,11 +63,7 @@
     (when timer {:body (:data timer)}
               (route/not-found {:message "Not found"}))))
 
-(defn reflect [request]
-  (str request))
-
 (defroutes main-routes
-  (POST "/timers/:id" request (reflect request))
   (PUT "/timers/:id" request (handle-timer-request request))
   (GET "/timers/:id" request (get-timer request))
   (GET "/timers" request (fn [r] @timers))
