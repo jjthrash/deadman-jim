@@ -3,6 +3,7 @@
   (:require [clojure.data.json :as json]
             [compojure.route :as route]
             [ring.middleware.json :as middleware]
+            [ring.middleware.basic-authentication :refer [wrap-basic-authentication]]
             [compojure.handler :as handler])
   (:import [com.twilio.sdk TwilioRestClient]))
 
@@ -11,11 +12,17 @@
 (def twilio-sid (System/getenv "TWILIO_ACCOUNT_SID"))
 (def twilio-auth-token (System/getenv "TWILIO_AUTH_TOKEN"))
 (def twilio-from-number (System/getenv "TWILIO_FROM_NUMBER"))
+(def credentials (read-string (or (System/getenv "CREDENTIALS")
+                                  "nil")))
 
 (defn twilio-configured? []
   (and twilio-sid
        twilio-auth-token
        twilio-from-number))
+
+(defn authenticated? [username password]
+  (= (get credentials username)
+     password))
 
 (defn send-sms [number message]
   (if (twilio-configured?)
@@ -69,6 +76,7 @@
 (def app
   (->
     (handler/api main-routes)
+    (wrap-basic-authentication authenticated?)
     (middleware/wrap-json-body)
     (middleware/wrap-json-response)))
 

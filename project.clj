@@ -9,6 +9,7 @@
                  [compojure "1.1.8"]
                  [ring/ring-json "0.3.1"]
                  [ring-json-params "0.1.0"]
+                 [ring-basic-authentication "1.0.5"]
                  [org.clojure/data.json "0.2.5"]
                  [com.twilio.sdk/twilio-java-sdk "3.3.16"]
                  [org.codehaus.jackson/jackson-core-asl "1.9.13"]]
