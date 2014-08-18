@@ -32,7 +32,7 @@
       (send-sms number message))))
 
 (defn maybe-kill-thread [thread]
-  (if thread
+  (when thread
     (.stop thread)))
 
 ; timers become {:data <what they PUT> :timer <the timer thing>}
@@ -53,7 +53,7 @@
 
 (defn get-timer [{rp :route-params}]
   (let [timer (get @timers (:id rp))]
-    (if timer {:body (:data timer)}
+    (when timer {:body (:data timer)}
               (route/not-found {:message "Not found"}))))
 
 (defn reflect [request]
